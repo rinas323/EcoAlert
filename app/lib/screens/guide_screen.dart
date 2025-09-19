@@ -4,6 +4,7 @@ import 'guides/composting_guide_screen.dart';
 import 'guides/plastic_reduction_screen.dart';
 import 'guides/hazardous_disposal_screen.dart';
 import 'guides/flood_resilience_screen.dart';
+import 'web/document_webview_screen.dart';
 
 class GuideScreen extends StatelessWidget {
   const GuideScreen({super.key});
@@ -30,6 +31,8 @@ class GuideScreen extends StatelessWidget {
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const CompostingGuideScreen()),
           ),
+          secondaryCtaLabel: 'Kerala composting PDF',
+          onSecondaryCta: () => _openInApp(context, 'Kerala composting PDF', 'https://www.suchitwamission.org/wp-content/uploads/2020/06/Composting-Guide.pdf'),
         ),
         const SizedBox(height: 12),
         _GuideCard(
@@ -44,6 +47,8 @@ class GuideScreen extends StatelessWidget {
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const PlasticReductionScreen()),
           ),
+          secondaryCtaLabel: 'Kerala plastic ban FAQ',
+          onSecondaryCta: () => _openInApp(context, 'Kerala plastic ban FAQ', 'https://www.suchitwamission.org/plastic-ban-faq/'),
         ),
         const SizedBox(height: 12),
         _GuideCard(
@@ -58,6 +63,8 @@ class GuideScreen extends StatelessWidget {
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const HazardousDisposalScreen()),
           ),
+          secondaryCtaLabel: 'Kerala biomedical rules',
+          onSecondaryCta: () => _openInApp(context, 'Kerala biomedical rules', 'https://www.kspcb.kerala.gov.in/biomedical-waste/'),
         ),
         const SizedBox(height: 12),
         _GuideCard(
@@ -72,8 +79,18 @@ class GuideScreen extends StatelessWidget {
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const FloodResilienceScreen()),
           ),
+          secondaryCtaLabel: 'Disaster mgmt guidelines',
+          onSecondaryCta: () => _openInApp(context, 'Disaster mgmt guidelines', 'https://sdma.kerala.gov.in/'),
         ),
       ],
+    );
+  }
+
+  void _openInApp(BuildContext context, String title, String url) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => DocumentWebViewScreen(title: title, url: url),
+      ),
     );
   }
 }
@@ -84,6 +101,8 @@ class _GuideCard extends StatelessWidget {
   final String cta;
   final Color color;
   final VoidCallback onTap;
+  final String? secondaryCtaLabel;
+  final VoidCallback? onSecondaryCta;
 
   const _GuideCard({
     required this.title,
@@ -91,6 +110,8 @@ class _GuideCard extends StatelessWidget {
     required this.cta,
     required this.color,
     required this.onTap,
+    this.secondaryCtaLabel,
+    this.onSecondaryCta,
   });
 
   @override
@@ -119,7 +140,14 @@ class _GuideCard extends StatelessWidget {
                   ),
                 )),
             const SizedBox(height: 8),
-            TextButton.icon(onPressed: onTap, icon: const Icon(Icons.arrow_forward), label: Text(cta)),
+            Wrap(
+              spacing: 8,
+              children: [
+                TextButton.icon(onPressed: onTap, icon: const Icon(Icons.arrow_forward), label: Text(cta)),
+                if (secondaryCtaLabel != null && onSecondaryCta != null)
+                  OutlinedButton.icon(onPressed: onSecondaryCta, icon: const Icon(Icons.chrome_reader_mode), label: Text(secondaryCtaLabel!)),
+              ],
+            ),
           ],
         ),
       ),

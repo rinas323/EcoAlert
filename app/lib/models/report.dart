@@ -18,6 +18,11 @@ class Report {
   final String mediaPath; // local file path
   final bool isVideo;
 
+  final String? municipality;
+  final String? name;
+  final String? contact;
+  final bool isAnonymous;
+
   const Report({
     required this.id,
     required this.latitude,
@@ -28,6 +33,10 @@ class Report {
     this.isVideo = false,
     this.title,
     this.description,
+    this.municipality,
+    this.name,
+    this.contact,
+    this.isAnonymous = false,
   });
 
   String get shortTypeLabel => wasteType.name;

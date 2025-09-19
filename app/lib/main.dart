@@ -7,6 +7,7 @@ import 'screens/reports_screen.dart';
 import 'screens/guide_screen.dart';
 import 'screens/municipality_screen.dart';
 import 'store/report_store.dart';
+import 'widgets/custom_app_bar.dart';
 
 void main() {
   runApp(const EcoAlertApp());
@@ -64,23 +65,58 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('EcoAlert • ${_titles[_index]}'),
+      appBar: CustomAppBar(
+        title: _titles[_index],
+        showLogo: true, // Show logo only on home/capture screen
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: _screens[_index],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.camera_alt_outlined), selectedIcon: Icon(Icons.camera_alt), label: 'Capture'),
-          NavigationDestination(icon: Icon(Icons.map_outlined), selectedIcon: Icon(Icons.map), label: 'Map'),
-          NavigationDestination(icon: Icon(Icons.list_alt_outlined), selectedIcon: Icon(Icons.list_alt), label: 'Reports'),
-          NavigationDestination(icon: Icon(Icons.school_outlined), selectedIcon: Icon(Icons.school), label: 'Guide'),
-          NavigationDestination(icon: Icon(Icons.apartment_outlined), selectedIcon: Icon(Icons.apartment), label: 'Municipal'),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: NavigationBar(
+          selectedIndex: _index,
+          onDestinationSelected: (i) => setState(() => _index = i),
+          backgroundColor: Colors.white,
+          indicatorColor: Colors.green.shade100,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.camera_alt_outlined), 
+              selectedIcon: Icon(Icons.camera_alt, color: Colors.green), 
+              label: 'Capture'
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.map_outlined), 
+              selectedIcon: Icon(Icons.map, color: Colors.green), 
+              label: 'Map'
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.list_alt_outlined), 
+              selectedIcon: Icon(Icons.list_alt, color: Colors.green), 
+              label: 'Reports'
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.school_outlined), 
+              selectedIcon: Icon(Icons.school, color: Colors.green), 
+              label: 'Guide'
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.apartment_outlined), 
+              selectedIcon: Icon(Icons.apartment, color: Colors.green), 
+              label: 'Municipal'
+            ),
+          ],
+        ),
       ),
     );
   }
