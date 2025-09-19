@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../screens/notifications_screen.dart';
+import '../screens/settings_screen.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
@@ -94,10 +97,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           margin: const EdgeInsets.only(right: 8),
           child: IconButton(
             onPressed: () {
-              // TODO: Implement notifications
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Notifications coming soon!')),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
             },
             icon: Stack(
               children: [
@@ -128,10 +128,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           margin: const EdgeInsets.only(right: 16),
           child: IconButton(
             onPressed: () {
-              // TODO: Implement settings
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Settings coming soon!')),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
             },
             icon: Icon(
               Icons.settings_outlined,
