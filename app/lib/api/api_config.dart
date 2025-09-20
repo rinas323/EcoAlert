@@ -7,6 +7,10 @@ class ApiConfig {
   /// e.g., '/api/reports' or '/reports'
   static const String createReportPath = '/YOUR_REPORTS_ENDPOINT';
 
+  /// Authentication endpoints (placeholders)
+  static const String loginPath = '/auth/login/';
+  static const String signupPath = '/auth/signup/';
+
   /// Optional: API key header name and value if needed
   static const String? apiKeyHeader = null; // e.g., 'x-api-key'
   static const String? apiKey = null; // e.g., 'abcdef123456'

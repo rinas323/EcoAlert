@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path("", lambda request: HttpResponse("Welcome to EcoAlert Backend!"))
+    path('auth/', include('authapp.urls')),
 ]
