@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../screens/notifications_screen.dart';
 import '../screens/settings_screen.dart';
@@ -120,7 +121,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ],
             ),
-            tooltip: 'Notifications',
+            tooltip: 'notifications'.tr(),
           ),
         ),
         // Settings Icon
@@ -135,7 +136,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.grey.shade700,
               size: 24,
             ),
-            tooltip: 'Settings',
+            tooltip: 'settings'.tr(),
           ),
         ),
       ],

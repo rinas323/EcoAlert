@@ -85,19 +85,19 @@ class _HomeShellState extends State<HomeShell> {
     MunicipalityScreen(),
   ];
 
-  static const _titles = <String>[
-    'Capture',
-    'Map',
-    'Reports',
-    'Guide',
-    'Municipalities',
+  List<String> _getTitles(BuildContext context) => [
+    'capture'.tr(),
+    'map'.tr(),
+    'reports'.tr(),
+    'guide'.tr(),
+    'municipalities'.tr(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: _titles[_index],
+        title: _getTitles(context)[_index],
         showLogo: true, // Show logo only on home/capture screen
       ),
       body: AnimatedSwitcher(
@@ -120,31 +120,31 @@ class _HomeShellState extends State<HomeShell> {
           backgroundColor: Colors.white,
           indicatorColor: Colors.green.shade100,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          destinations: const [
+          destinations: [
             NavigationDestination(
-              icon: Icon(Icons.camera_alt_outlined), 
-              selectedIcon: Icon(Icons.camera_alt, color: Colors.green), 
-              label: 'Capture'
+              icon: const Icon(Icons.camera_alt_outlined), 
+              selectedIcon: const Icon(Icons.camera_alt, color: Colors.green), 
+              label: 'capture'.tr()
             ),
             NavigationDestination(
-              icon: Icon(Icons.map_outlined), 
-              selectedIcon: Icon(Icons.map, color: Colors.green), 
-              label: 'Map'
+              icon: const Icon(Icons.map_outlined), 
+              selectedIcon: const Icon(Icons.map, color: Colors.green), 
+              label: 'map'.tr()
             ),
             NavigationDestination(
-              icon: Icon(Icons.list_alt_outlined), 
-              selectedIcon: Icon(Icons.list_alt, color: Colors.green), 
-              label: 'Reports'
+              icon: const Icon(Icons.list_alt_outlined), 
+              selectedIcon: const Icon(Icons.list_alt, color: Colors.green), 
+              label: 'reports'.tr()
             ),
             NavigationDestination(
-              icon: Icon(Icons.school_outlined), 
-              selectedIcon: Icon(Icons.school, color: Colors.green), 
-              label: 'Guide'
+              icon: const Icon(Icons.school_outlined), 
+              selectedIcon: const Icon(Icons.school, color: Colors.green), 
+              label: 'guide'.tr()
             ),
             NavigationDestination(
-              icon: Icon(Icons.apartment_outlined), 
-              selectedIcon: Icon(Icons.apartment, color: Colors.green), 
-              label: 'Municipal'
+              icon: const Icon(Icons.apartment_outlined), 
+              selectedIcon: const Icon(Icons.apartment, color: Colors.green), 
+              label: 'municipalities'.tr()
             ),
           ],
         ),

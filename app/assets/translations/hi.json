@@ -33,5 +33,20 @@
   "failed_to_submit_report": "विफल: {error}",
   "location_services_disabled": "स्थान सेवाएं अक्षम हैं। कृपया उन्हें सेटिंग्स में सक्षम करें।",
   "location_permission_permanently_denied": "स्थान की अनुमति स्थायी रूप से अस्वीकार कर दी गई है। कृपया ऐप सेटिंग्स में सक्षम करें।",
-  "location_permission_denied": "स्थान की अनुमति अस्वीकार। कृपया स्थान पहुंच सक्षम करें।"
+  "location_permission_denied": "स्थान की अनुमति अस्वीकार। कृपया स्थान पहुंच सक्षम करें।",
+  "capture": "कैप्चर",
+  "map": "मानचित्र",
+  "reports": "रिपोर्ट्स",
+  "guide": "गाइड",
+  "municipalities": "नगर पालिकाएं",
+  "notifications": "सूचनाएं",
+  "map_info_text": "रिपोर्ट की गई लोकेशन मानचित्र पर दिखाई जाती हैं। विवरण देखने के लिए मार्कर टैप करें (जल्द आने वाला)।",
+  "could_not_launch_dialer": "{0} के लिए डायलर लॉन्च नहीं कर सके",
+  "search_hint": "नगर पालिका, पंचायत, या वार्ड खोजें",
+  "call_phone": "कॉल करें {0}",
+  "no_reports_yet": "अभी तक कोई रिपोर्ट नहीं",
+  "submit_report_to_see": "इसे यहाँ देखने के लिए एक रिपोर्ट सबमिट करें",
+  "not_available": "उपलब्ध नहीं",
+  "waste_management_guide": "अपशिष्ट प्रबंधन गाइड",
+  "waste_management_guide_subtitle": "अपशिष्ट कम करने और जिम्मेदारी से संभालने के लिए केरल के अनुकूल सुझाव।"
 }

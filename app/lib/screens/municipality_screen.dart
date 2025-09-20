@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MunicipalityScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _MunicipalityScreenState extends State<MunicipalityScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not launch dialer for $phoneNumber')),
+          SnackBar(content: Text('could_not_launch_dialer'.tr(args: [phoneNumber]))),
         );
       }
     }
@@ -44,7 +45,7 @@ class _MunicipalityScreenState extends State<MunicipalityScreen> {
           child: SearchBar(
             controller: _controller,
             leading: const Icon(Icons.search),
-            hintText: 'Search municipality, panchayat, or ward',
+            hintText: 'search_hint'.tr(),
             onChanged: (v) => setState(() => _query = v),
             trailing: [
               IconButton(
@@ -77,7 +78,7 @@ class _MunicipalityScreenState extends State<MunicipalityScreen> {
                   trailing: IconButton(
                     icon: const Icon(Icons.call, color: Colors.green),
                     onPressed: () => _makeCall(m.phone),
-                    tooltip: 'Call ${m.phone}',
+                    tooltip: 'call_phone'.tr(args: [m.phone]),
                   ),
                   onTap: () {
                     // TODO: Implement municipality details screen

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import '../store/report_store.dart';
@@ -14,14 +15,14 @@ class ReportsScreen extends StatelessWidget {
     final reports = store.reports;
 
     if (reports.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.inbox, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
-            Text('No reports yet', style: TextStyle(fontSize: 18, color: Colors.grey)),
-            Text('Submit a report to see it here', style: TextStyle(color: Colors.grey)),
+            const Icon(Icons.inbox, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
+            Text('no_reports_yet'.tr(), style: const TextStyle(fontSize: 18, color: Colors.grey)),
+            Text('submit_report_to_see'.tr(), style: const TextStyle(color: Colors.grey)),
           ],
         ),
       );
@@ -78,7 +79,7 @@ class ReportsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          r.municipality ?? 'N/A',
+                          r.municipality ?? 'not_available'.tr(),
                           style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
                         ),
                         const SizedBox(height: 8),

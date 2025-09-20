@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
@@ -29,7 +30,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
     try {
       final locEnabled = await Geolocator.isLocationServiceEnabled();
       if (!locEnabled) {
-        throw Exception('Location services are disabled. Please enable them in settings.');
+        throw Exception('location_services_disabled'.tr());
       }
 
       LocationPermission permission = await Geolocator.checkPermission();
@@ -38,11 +39,11 @@ class _CaptureScreenState extends State<CaptureScreen> {
       }
 
       if (permission == LocationPermission.deniedForever) {
-        throw Exception('Location permission permanently denied. Please enable in app settings.');
+        throw Exception('location_permission_permanently_denied'.tr());
       }
 
       if (permission == LocationPermission.denied) {
-        throw Exception('Location permission denied. Please enable location access.');
+        throw Exception('location_permission_denied'.tr());
       }
     } catch (e) {
       print('Permission error: $e');
@@ -78,7 +79,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Camera error: $e')),
+          SnackBar(content: Text('camera_error'.tr(args: [e.toString()]))),
         );
       }
     }
@@ -88,7 +89,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
     if (_isWorking) return;
     if (_selectedMedia == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please capture a photo or video first')),
+        SnackBar(content: Text('please_capture_media'.tr())),
       );
       return;
     }
@@ -127,12 +128,12 @@ class _CaptureScreenState extends State<CaptureScreen> {
         _formKey.currentState?.reset();
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Report submitted successfully!')),
+          SnackBar(content: Text('report_submitted_successfully'.tr())),
         );
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed: $e')),
+            SnackBar(content: Text('failed_to_submit_report'.tr(args: [e.toString()]))),
           );
         }
       } finally {
@@ -169,7 +170,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
                   Icon(Icons.report_problem, size: 48, color: Colors.green.shade600),
                   const SizedBox(height: 12),
                   Text(
-                    'Report Waste Issue',
+                    'report_waste_issue'.tr(),
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.green.shade800,
@@ -177,7 +178,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Help keep Kerala clean by reporting waste issues',
+                    'help_keep_kerala_clean'.tr(),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.green.shade700,
                     ),
@@ -201,15 +202,15 @@ class _CaptureScreenState extends State<CaptureScreen> {
                       children: [
                         Icon(Icons.person, color: Colors.blue.shade600),
                         const SizedBox(width: 8),
-                        Text("Sender's Information", style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                        Text('sender_information'.tr(), style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 20),
                     FormBuilderTextField(
                       name: 'name',
-                      decoration: const InputDecoration(
-                        labelText: 'Name (Optional)',
-                        hintText: 'Enter your name',
+                      decoration: InputDecoration(
+                        labelText: 'name_optional'.tr(),
+                        hintText: 'enter_your_name'.tr(),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.person_outline),
                       ),
@@ -217,9 +218,9 @@ class _CaptureScreenState extends State<CaptureScreen> {
                     const SizedBox(height: 16),
                     FormBuilderTextField(
                       name: 'contact',
-                      decoration: const InputDecoration(
-                        labelText: 'Contact (Optional)',
-                        hintText: 'Phone or email',
+                      decoration: InputDecoration(
+                        labelText: 'contact_optional'.tr(),
+                        hintText: 'phone_or_email'.tr(),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.contact_phone),
                       ),
@@ -228,7 +229,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
                     FormBuilderCheckbox(
                       name: 'isAnonymous',
                       initialValue: false,
-                      title: const Text('Stay Anonymous'),
+                      title: Text('stay_anonymous'.tr()),
                       decoration: const InputDecoration(border: InputBorder.none),
                     ),
                   ],
@@ -250,15 +251,15 @@ class _CaptureScreenState extends State<CaptureScreen> {
                       children: [
                         Icon(Icons.location_on, color: Colors.orange.shade600),
                         const SizedBox(width: 8),
-                        Text('Location Information', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                        Text('location_information'.tr(), style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 20),
                     FormBuilderDropdown<String>(
                       name: 'municipality',
-                      decoration: const InputDecoration(
-                        labelText: 'Municipality *',
-                        hintText: 'Select your municipality',
+                      decoration: InputDecoration(
+                        labelText: 'municipality'.tr(),
+                        hintText: 'select_your_municipality'.tr(),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.apartment),
                       ),
@@ -295,7 +296,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
                       children: [
                         Icon(Icons.camera_alt, color: Colors.purple.shade600),
                         const SizedBox(width: 8),
-                        Text('Evidence', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                        Text('evidence'.tr(), style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -338,7 +339,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
                           child: ElevatedButton.icon(
                             onPressed: () => _captureMedia(isVideo: false),
                             icon: const Icon(Icons.photo_camera),
-                            label: const Text('Photo'),
+                            label: Text('photo'.tr()),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               backgroundColor: Colors.blue.shade600,
@@ -351,7 +352,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
                           child: ElevatedButton.icon(
                             onPressed: () => _captureMedia(isVideo: true),
                             icon: const Icon(Icons.videocam),
-                            label: const Text('Video'),
+                            label: Text('video'.tr()),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               backgroundColor: Colors.red.shade600,
@@ -380,7 +381,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
                         child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                       )
                     : const Icon(Icons.send),
-                label: Text(_isWorking ? 'Submitting...' : 'Submit Report'),
+                label: Text(_isWorking ? 'submitting'.tr() : 'submit_report'.tr()),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green.shade600,
                   foregroundColor: Colors.white,
@@ -395,16 +396,16 @@ class _CaptureScreenState extends State<CaptureScreen> {
             Card(
               color: Colors.blue.shade50,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              child: const Padding(
-                padding: EdgeInsets.all(16),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    Icon(Icons.info_outline, color: Colors.blue),
-                    SizedBox(width: 12),
+                    const Icon(Icons.info_outline, color: Colors.blue),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Your report will be sent to the selected municipality for action.',
-                        style: TextStyle(color: Colors.blue),
+                        'report_sent_to_municipality'.tr(),
+                        style: const TextStyle(color: Colors.blue),
                       ),
                     ),
                   ],
