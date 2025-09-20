@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../api/auth_service.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -39,13 +40,27 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (!mounted) return;
-    setState(() => _isLoading = false);
-    // Placeholder: to be wired into auth flow later
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Signup submit tapped (to be wired later)')),
-    );
+    try {
+      final resp = await AuthService.signup(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+        firstName: _nameController.text.trim(),
+        phone: _phoneController.text.trim().isEmpty ? null : _phoneController.text.trim(),
+      );
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      final token = resp['token'];
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Account created. Token: ${token != null ? token.toString().substring(0, 8) + '…' : 'N/A'}')),
+      );
+      // TODO: store token securely and integrate navigation later
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Signup failed: ${e.toString()}')),
+      );
+    }
   }
 
   @override
@@ -224,34 +239,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                               ),
                               const SizedBox(height: 12),
-                              Row(
-                                children: const [
-                                  Expanded(child: Divider()),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Text('or'),
-                                  ),
-                                  Expanded(child: Divider()),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              Wrap(
-                                runSpacing: 8,
-                                spacing: 8,
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  OutlinedButton.icon(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.g_mobiledata, size: 28),
-                                    label: const Text('Continue with Google'),
-                                  ),
-                                  OutlinedButton.icon(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.phone_android),
-                                    label: const Text('Continue with Phone'),
-                                  ),
-                                ],
-                              ),
+                              // Social options intentionally removed (not implementing now).
                             ],
                           ),
                         ),

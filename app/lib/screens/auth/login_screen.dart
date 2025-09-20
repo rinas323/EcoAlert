@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../api/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,13 +25,26 @@ class _LoginScreenState extends State<LoginScreen> {
   void _submit() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (!mounted) return;
-    setState(() => _isLoading = false);
-    // Intentionally left unimplemented: integrate with auth flow later
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Login submit tapped (to be wired later)')),
-    );
+    try {
+      final resp = await AuthService.login(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      final token = resp['token'];
+      final user = resp['user'];
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Logged in. Token: ${token != null ? token.toString().substring(0, 8) + '…' : 'N/A'}')),
+      );
+      // TODO: store token securely and integrate navigation later
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: ${e.toString()}')),
+      );
+    }
   }
 
   @override
@@ -171,35 +185,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 children: [
                                   Text('Don\'t have an account?', style: theme.textTheme.bodyMedium),
                                   TextButton(onPressed: () {}, child: const Text('Create account')),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  const Expanded(child: Divider()),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Text('or', style: TextStyle(color: Colors.grey.shade600)),
-                                  ),
-                                  const Expanded(child: Divider()),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              Wrap(
-                                runSpacing: 8,
-                                spacing: 8,
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  OutlinedButton.icon(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.g_mobiledata, size: 28),
-                                    label: const Text('Continue with Google'),
-                                  ),
-                                  OutlinedButton.icon(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.phone_android),
-                                    label: const Text('Continue with Phone'),
-                                  ),
                                 ],
                               ),
                             ],
