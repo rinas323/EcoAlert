@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MunicipalityScreen extends StatefulWidget {
   const MunicipalityScreen({super.key});
@@ -17,6 +18,19 @@ class _MunicipalityScreenState extends State<MunicipalityScreen> {
     super.dispose();
   }
 
+  Future<void> _makeCall(String phoneNumber) async {
+    final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(launchUri)) {
+      await launchUrl(launchUri);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not launch dialer for $phoneNumber')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = _mockMunicipalities
@@ -32,6 +46,15 @@ class _MunicipalityScreenState extends State<MunicipalityScreen> {
             leading: const Icon(Icons.search),
             hintText: 'Search municipality, panchayat, or ward',
             onChanged: (v) => setState(() => _query = v),
+            trailing: [
+              IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  _controller.clear();
+                  setState(() => _query = '');
+                },
+              ),
+            ],
           ),
         ),
         Expanded(
@@ -42,17 +65,23 @@ class _MunicipalityScreenState extends State<MunicipalityScreen> {
             itemBuilder: (context, index) {
               final m = items[index];
               return Card(
-                elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                elevation: 2,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 child: ListTile(
-                  title: Text(m.name),
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.primaries[index % Colors.primaries.length].shade100,
+                    child: Text(m.name[0], style: TextStyle(color: Colors.primaries[index % Colors.primaries.length].shade800, fontWeight: FontWeight.bold)),
+                  ),
+                  title: Text(m.name, style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('${m.district} • ${m.category}'),
                   trailing: IconButton(
-                    icon: const Icon(Icons.call),
-                    onPressed: () {},
+                    icon: const Icon(Icons.call, color: Colors.green),
+                    onPressed: () => _makeCall(m.phone),
                     tooltip: 'Call ${m.phone}',
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    // TODO: Implement municipality details screen
+                  },
                 ),
               );
             },
