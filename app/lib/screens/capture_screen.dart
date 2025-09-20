@@ -11,6 +11,7 @@ import 'package:uuid/uuid.dart';
 
 import '../models/report.dart';
 import '../store/report_store.dart';
+import '../api/api_service.dart';
 
 class CaptureScreen extends StatefulWidget {
   const CaptureScreen({super.key});
@@ -117,7 +118,11 @@ class _CaptureScreenState extends State<CaptureScreen> {
           isAnonymous: formData['isAnonymous'] ?? false,
         );
 
+        // Upload to backend API
+        await ApiService.uploadReport(report);
+
         if (!mounted) return;
+        // Only add locally if upload succeeded
         context.read<ReportStore>().addReport(report);
 
         // Reset form and media
