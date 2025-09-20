@@ -1,14 +1,27 @@
+import uuid
 from django.db import models
 
-class Report(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-
 class Complaint(models.Model):
-    report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    WASTE_TYPE_CHOICES = [
+        ('plastic', 'Plastic'),
+        ('organic', 'Organic'),
+        ('metal', 'Metal'),
+        ('other', 'Other'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255, blank=True)
+    description = models.TextField(blank=True)
+    latitude = models.FloatField(default=0.0)
+    longitude = models.FloatField(default=0.0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    waste_type = models.CharField(max_length=50, choices=WASTE_TYPE_CHOICES, default='other')
     municipality = models.CharField(max_length=255)
-    status = models.CharField(max_length=50, default='pending')
-    timestamp = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=255)
+    contact = models.CharField(max_length=255)
+    is_anonymous = models.BooleanField(default=False)
+    is_video = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='complaint_images/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.title or 'Complaint'} - {self.municipality}"
