@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'screens/capture_screen.dart';
 import 'screens/map_screen.dart';
@@ -7,10 +8,21 @@ import 'screens/reports_screen.dart';
 import 'screens/guide_screen.dart';
 import 'screens/municipality_screen.dart';
 import 'store/report_store.dart';
+import 'store/theme_provider.dart';
 import 'widgets/custom_app_bar.dart';
 
-void main() {
-  runApp(const EcoAlertApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('hi'), Locale('ml')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: const EcoAlertApp(),
+    ),
+  );
 }
 
 class EcoAlertApp extends StatelessWidget {
@@ -18,19 +30,38 @@ class EcoAlertApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final base = ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.green));
-    final theme = base.copyWith(
-      useMaterial3: true,
-      textTheme: base.textTheme.apply(bodyColor: Colors.black87, displayColor: Colors.black87),
-      appBarTheme: const AppBarTheme(centerTitle: true),
-      cardTheme: CardThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-    );
-    return ChangeNotifierProvider(
-      create: (_) => ReportStore(),
-      child: MaterialApp(
-        title: 'EcoAlert Kerala',
-        theme: theme,
-        home: const HomeShell(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ReportStore()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          final base = ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.green));
+          final theme = base.copyWith(
+            useMaterial3: true,
+            textTheme: base.textTheme.apply(bodyColor: Colors.black87, displayColor: Colors.black87),
+            appBarTheme: const AppBarTheme(centerTitle: true),
+            cardTheme: CardThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+          );
+
+          final darkTheme = ThemeData.dark().copyWith(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.green, brightness: Brightness.dark),
+            cardTheme: CardThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+          );
+
+          return MaterialApp(
+            title: 'EcoAlert Kerala',
+            theme: theme,
+            darkTheme: darkTheme,
+            themeMode: themeProvider.themeMode,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            home: const HomeShell(),
+          );
+        },
       ),
     );
   }
