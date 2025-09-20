@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
+
+import '../store/theme_provider.dart';
+import 'about_screen.dart';
+import 'help_and_feedback_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -9,14 +15,52 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
-  bool _darkModeEnabled = false;
+
+  void _showLanguageDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('language'.tr()),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text('english'.tr()),
+                  onTap: () {
+                    context.setLocale(const Locale('en'));
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('hindi'.tr()),
+                  onTap: () {
+                    context.setLocale(const Locale('hi'));
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('malayalam'.tr()),
+                  onTap: () {
+                    context.setLocale(const Locale('ml'));
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
-        backgroundColor: Colors.blueGrey,
+        title: Text('settings'.tr()),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -27,20 +71,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               children: [
                 ListTile(
-                  leading: const Icon(Icons.person, color: Colors.blueGrey),
-                  title: const Text('Account'),
+                  leading: const Icon(Icons.person),
+                  title: Text('account'.tr()),
                   onTap: () {
                     // TODO: Implement account screen
                   },
                 ),
                 const Divider(),
                 ListTile(
-                  leading: const Icon(Icons.language, color: Colors.blueGrey),
-                  title: const Text('Language'),
-                  subtitle: const Text('English'),
-                  onTap: () {
-                    // TODO: Implement language selection
-                  },
+                  leading: const Icon(Icons.language),
+                  title: Text('language'.tr()),
+                  subtitle: Text(context.locale.toString() == 'en' ? 'English' : context.locale.toString() == 'hi' ? 'हिंदी' : 'മലയാളം'),
+                  onTap: _showLanguageDialog,
                 ),
               ],
             ),
@@ -52,8 +94,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               children: [
                 SwitchListTile(
-                  secondary: const Icon(Icons.notifications, color: Colors.blueGrey),
-                  title: const Text('Enable Notifications'),
+                  secondary: const Icon(Icons.notifications),
+                  title: Text('enable_notifications'.tr()),
                   value: _notificationsEnabled,
                   onChanged: (bool value) {
                     setState(() {
@@ -63,13 +105,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const Divider(),
                 SwitchListTile(
-                  secondary: const Icon(Icons.dark_mode, color: Colors.blueGrey),
-                  title: const Text('Enable Dark Mode'),
-                  value: _darkModeEnabled,
+                  secondary: const Icon(Icons.dark_mode),
+                  title: Text('enable_dark_mode'.tr()),
+                  value: themeProvider.themeMode == ThemeMode.dark,
                   onChanged: (bool value) {
-                    setState(() {
-                      _darkModeEnabled = value;
-                    });
+                    themeProvider.toggleTheme(value);
                   },
                 ),
               ],
@@ -82,24 +122,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               children: [
                 ListTile(
-                  leading: const Icon(Icons.info, color: Colors.blueGrey),
-                  title: const Text('About'),
+                  leading: const Icon(Icons.info),
+                  title: Text('about'.tr()),
                   onTap: () {
-                    // TODO: Implement about screen
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const AboutScreen()));
                   },
                 ),
                 const Divider(),
                 ListTile(
-                  leading: const Icon(Icons.help, color: Colors.blueGrey),
-                  title: const Text('Help & Feedback'),
+                  leading: const Icon(Icons.help),
+                  title: Text('help_feedback'.tr()),
                   onTap: () {
-                    // TODO: Implement help & feedback screen
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpAndFeedbackScreen()));
                   },
                 ),
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.logout, color: Colors.red),
-                  title: const Text('Logout', style: TextStyle(color: Colors.red)),
+                  title: Text('logout'.tr(), style: const TextStyle(color: Colors.red)),
                   onTap: () {
                     // TODO: Implement logout
                   },

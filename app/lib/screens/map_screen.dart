@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -52,10 +53,10 @@ class MapScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: Row(
-                children: const [
-                  Icon(Icons.location_on, color: Colors.red),
-                  SizedBox(width: 8),
-                  Expanded(child: Text('Reported locations are shown on the map. Tap markers to view details (coming soon).')),
+                children: [
+                  const Icon(Icons.location_on, color: Colors.red),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text('map_info_text'.tr())),
                 ],
               ),
             ),

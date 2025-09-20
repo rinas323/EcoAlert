@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'guides/composting_guide_screen.dart';
 import 'guides/plastic_reduction_screen.dart';
@@ -15,9 +16,9 @@ class GuideScreen extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Text('Waste Management Guide', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
+        Text('waste_management_guide'.tr(), style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
         const SizedBox(height: 12),
-        Text('Kerala-friendly tips for reducing waste and handling it responsibly.'),
+        Text('waste_management_guide_subtitle'.tr()),
         const SizedBox(height: 16),
         _GuideCard(
           title: 'Home Composting',
